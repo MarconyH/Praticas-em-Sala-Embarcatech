@@ -5,9 +5,9 @@
 #include "pico/time.h"
 
 // 🔧 CONFIGURAÇÃO DE CARGA COMPUTACIONAL
-//#define CARGA_LED11 55000   // ~ciclos para tarefa do LED11
-//#define CARGA_LED12 75000   // ~ciclos para tarefa do LED12
-//#define CARGA_LED13 80000   // ~ciclos para tarefa do LED13
+#define CARGA_LED11 1550000   // ~ciclos para tarefa do LED11
+#define CARGA_LED12 1750000   // ~ciclos para tarefa do LED12
+#define CARGA_LED13 1800000   // ~ciclos para tarefa do LED13
 
 void carga_computacional(int ciclos)
 {
@@ -29,10 +29,11 @@ void led_task_11()
 
         estado = !estado;
         gpio_put(LED_PIN, estado);
-        //carga_computacional(CARGA_LED11);
+        carga_computacional(CARGA_LED11);
 
         absolute_time_t end = get_absolute_time();
         int64_t exec_time_us = absolute_time_diff_us(start, end);
+
         printf("LED11 - Tempo de CPU: %lld us\n", exec_time_us);
 
         vTaskDelay(pdMS_TO_TICKS(100));
@@ -52,7 +53,7 @@ void led_task_12()
 
         estado = !estado;
         gpio_put(LED_PIN, estado);
-        //carga_computacional(CARGA_LED12);
+        carga_computacional(CARGA_LED12);
 
         absolute_time_t end = get_absolute_time();
         int64_t exec_time_us = absolute_time_diff_us(start, end);
@@ -75,7 +76,7 @@ void led_task_13()
 
         estado = !estado;
         gpio_put(LED_PIN, estado);
-        //carga_computacional(CARGA_LED13);
+        carga_computacional(CARGA_LED13);
 
         absolute_time_t end = get_absolute_time();
         int64_t exec_time_us = absolute_time_diff_us(start, end);
