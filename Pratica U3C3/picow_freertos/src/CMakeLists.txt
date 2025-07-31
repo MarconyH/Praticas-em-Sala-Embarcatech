@@ -21,6 +21,7 @@ target_link_libraries(picow_freertos
     pico_stdlib 
     FreeRTOS-Kernel
     hardware_adc
+    pico_multicore
 )
 
 pico_add_extra_outputs(picow_freertos)

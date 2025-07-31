@@ -1,114 +1,120 @@
 /*
 ================================================================================
-Exemplo prático 1: Tarefa envia dados lidos do ADC, outra atua sobre eles
-(Item 4.7 do E-Book)
+Exemplo 2 de Aplicação - SMP
+(Item 8.5 do E-Book)
+
+ATENÇÃO:
+
+Configuração necessária no FreeRTOSConfig.h
+
+Verifique se estes defines estão ativos:
+
+#define configNUMBER_OF_CORES 2
+#define configUSE_CORE_AFFINITY 1
+#define configRUN_MULTIPLE_PRIORITIES 1
+
+Defina no FreeRTOSConfig.h , caso não tenha:
+#define configUSE_PASSIVE_IDLE_HOOK 0
+
 =======================================================
 */
 
-// --- Inclusão das bibliotecas essenciais do Pico SDK e do FreeRTOS ---
-#include "pico/stdlib.h" // Funções de I/O e temporização do Raspberry Pi Pico
-#include "hardware/adc.h" // Controle do ADC interno (para leitura analógica)
-#include "FreeRTOS.h" // Núcleo do FreeRTOS
-#include "task.h" // Funções de criação e controle de tarefas
-#include "queue.h" // Funções de criação e manipulação de filas
+#include <stdio.h>
+#include "pico/stdlib.h"
+#include "hardware/adc.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
 
-// --- Mapeamento dos canais ADC utilizados ---
-#define ADC_Y 0 // Canal ADC 0 corresponde ao GPIO26 (eixo Y do joystick)
-#define ADC_X 1 // Canal ADC 1 corresponde ao GPIO27 (eixo X do joystick)
+// --- Definições de pinos ---
+#define VRX_PIN 27
+#define VRY_PIN 26
+#define BUTTON_PIN 5
+#define LED_PIN 13
 
-// --- Pinos de saída digital usados para acionar os LEDs ---
-#define LED_X 12 // LED que indica atividade no eixo X
-#define LED_Y 13 // LED que indica atividade no eixo Y
+// --- Handles globais ---
+QueueHandle_t joystick_queue;
+SemaphoreHandle_t usb_mutex;
+SemaphoreHandle_t button_semaphore;
 
-// --- Estrutura de dados para armazenar as leituras do joystick ---
-typedef struct {
-  uint16_t x; // Valor do eixo X (0 a 4095)
-  uint16_t y; // Valor do eixo Y (0 a 4095)
-} JoystickData_t;
+// --- Handles de tarefas ---
+TaskHandle_t sensor_handle, button_handle, actuator_handle;
 
-// --- Declaração da fila usada para comunicação entre as tarefas ---
-QueueHandle_t fila_joystick;
-
-// --- Tarefa responsável por ler os valores analógicos do joystick ---
-void tarefa_joystick(void *param) {
-  JoystickData_t leitura; // Variável para armazenar as leituras
-  
-  // Inicializa o módulo ADC do RP2040
+// --- Tarefa: Leitura do Joystick ---
+void sensor_task(void *param) {
   adc_init();
-  
-  // Configura os pinos GPIO26 e GPIO27 como entradas analógicas
-  adc_gpio_init(26); // VRy → ADC0
-  adc_gpio_init(27); // VRx → ADC1
-  while (true) {
-    
-    // Seleciona o canal do eixo X e realiza a leitura
-    adc_select_input(ADC_X);
-    leitura.x = adc_read();
-    
-    // Seleciona o canal do eixo Y e realiza a leitura
-    adc_select_input(ADC_Y);
-    leitura.y = adc_read();
-    
-    // Envia os dados lidos para a fila (bloqueia até conseguir enviar)
-    xQueueSend(fila_joystick, &leitura, portMAX_DELAY);
-    
-    // Aguarda 100 milissegundos antes de fazer nova leitura
+  adc_gpio_init(VRX_PIN);
+  adc_gpio_init(VRY_PIN);
+  while (1) {
+    uint16_t vrx, vry;
+    adc_select_input(1);
+    vrx = adc_read();
+    adc_select_input(0);
+    vry = adc_read();
+    uint16_t data[2] = {vrx, vry};
+    xQueueSend(joystick_queue, &data, 0);
+    vTaskDelay(pdMS_TO_TICKS(200));
+  }
+}
+
+// --- Tarefa: Leitura do botão ---
+void button_task(void *param) {
+  gpio_init(BUTTON_PIN);
+  gpio_set_dir(BUTTON_PIN, GPIO_IN);
+  gpio_pull_up(BUTTON_PIN);
+  while (1) {
+    if (!gpio_get(BUTTON_PIN)) {
+      xSemaphoreGive(button_semaphore);
+      vTaskDelay(pdMS_TO_TICKS(200)); // debounce
+    } else {
+      vTaskDelay(pdMS_TO_TICKS(10));
+    }
+  }
+}
+
+// --- Tarefa: LED + USB ---
+void actuator_task(void *param) {
+  gpio_init(LED_PIN);
+  gpio_set_dir(LED_PIN, GPIO_OUT);
+  uint16_t data[2];
+  while (1) {
+    if (xSemaphoreTake(button_semaphore, 0) == pdTRUE) {
+      for (int i = 0; i < 3; i++) {
+        gpio_put(LED_PIN, 1);
+        vTaskDelay(pdMS_TO_TICKS(100));
+        gpio_put(LED_PIN, 0);
+        vTaskDelay(pdMS_TO_TICKS(100));
+      }
+    }
+    if (xQueueReceive(joystick_queue, &data, pdMS_TO_TICKS(10)) == pdTRUE) {
+      if (xSemaphoreTake(usb_mutex, pdMS_TO_TICKS(100))) {
+        printf("Joystick - VRX: %d, VRY: %d\n", data[0], data[1]);
+        xSemaphoreGive(usb_mutex);
+      }
+      gpio_put(LED_PIN, (data[0] > 3000 || data[1] > 3000) ? 1 : 0);
+    }
     vTaskDelay(pdMS_TO_TICKS(100));
   }
 }
 
-// --- Tarefa que recebe os dados do joystick e controla os LEDs ---
-void tarefa_controle_led(void *param) {
-  JoystickData_t dado; // Variável que armazenará os dados recebidos
-  while (true) {
-    
-    // Espera (bloqueia) até receber dados da fila
-    if (xQueueReceive(fila_joystick, &dado, portMAX_DELAY) == pdPASS) {
-      
-      // Liga o LED_X se o valor do eixo X for maior que 3000
-      gpio_put(LED_X, (dado.x > 3000));
-      
-      // Liga o LED_Y se o valor do eixo Y for maior que 3000
-      gpio_put(LED_Y, (dado.y > 3000));
-    }
-  }
-}
-
-// --- Função principal do programa ---
 int main() {
-  
-  // Inicializa a comunicação serial padrão (para debug, se necessário)
   stdio_init_all();
+  sleep_ms(2000); // Aguarda conexão USB
+  joystick_queue = xQueueCreate(5, sizeof(uint16_t[2]));
+  usb_mutex = xSemaphoreCreateMutex();
+  button_semaphore = xSemaphoreCreateBinary();
   
-  // Inicializa os pinos dos LEDs e configura como saída digital
-  gpio_init(LED_X);
-  gpio_set_dir(LED_X, GPIO_OUT);
-  gpio_init(LED_Y);
-  gpio_set_dir(LED_Y, GPIO_OUT);
+  // Criação das tarefas
+  xTaskCreate(sensor_task, "Sensor", 256, NULL, 1, &sensor_handle);
+  xTaskCreate(button_task, "Button", 256, NULL, 1, &button_handle);
+  xTaskCreate(actuator_task, "Actuator", 512, NULL, 1, &actuator_handle);
   
-  // Cria a fila com capacidade para 10 elementos do tipo JoystickData_t
-  fila_joystick = xQueueCreate(10, sizeof(JoystickData_t));
+  // Afinidade de núcleo (SMP)
+  vTaskCoreAffinitySet(sensor_handle, (1 << 0)); // Core 0
+  vTaskCoreAffinitySet(button_handle, (1 << 0)); // Core 0
+  vTaskCoreAffinitySet(actuator_handle, (1 << 1)); // Core 1
+  vTaskStartScheduler();
   
-  // Verifica se a fila foi criada corretamente
-  if (fila_joystick != NULL) {
-    
-    // Cria a tarefa de leitura do joystick com prioridade 3
-    xTaskCreate(tarefa_joystick, "Joystick", 256, NULL, 3, NULL);
-    
-    // Cria a tarefa de controle dos LEDs com prioridade 2
-    xTaskCreate(tarefa_controle_led, "LEDs", 256, NULL, 2, NULL);
-    
-    // Inicia o escalonador do FreeRTOS
-    vTaskStartScheduler();
-  } else {
-    
-    // Caso a fila não seja criada, entra em loop piscando LED_X como sinal de erro
-    while (true) {
-      gpio_put(LED_X, 1);
-      sleep_ms(200);
-      gpio_put(LED_X, 0);
-      sleep_ms(200);
-    }
-  }
-  return 0;
+  while (1);
 }
