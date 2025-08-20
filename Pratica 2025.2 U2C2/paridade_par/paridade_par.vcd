@@ -1,0 +1,58 @@
+$date
+	Tue Aug 19 11:58:32 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	100ps
+$end
+$scope module paridade_par_tb $end
+$var wire 1 ! s0 $end
+$var reg 1 " a0 $end
+$var reg 1 # b0 $end
+$var reg 1 $ c0 $end
+$scope module uut $end
+$var wire 1 " a $end
+$var wire 1 # b $end
+$var wire 1 $ c $end
+$var wire 1 ! s $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+0$
+0#
+0"
+1!
+$end
+#100
+0!
+1$
+#200
+0!
+0$
+1#
+#300
+1!
+1$
+#400
+0!
+0$
+0#
+1"
+#500
+1!
+1$
+#600
+1!
+0$
+1#
+#700
+0!
+1$
+#800
