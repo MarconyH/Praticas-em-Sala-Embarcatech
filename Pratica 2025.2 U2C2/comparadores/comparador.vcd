@@ -1,0 +1,66 @@
+$date
+	Wed Aug 20 11:12:32 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module comparador_tb $end
+$var wire 1 ! AmenorB $end
+$var wire 1 " AmaiorB $end
+$var wire 1 # AigualB $end
+$var reg 4 $ A [3:0] $end
+$var reg 4 % B [3:0] $end
+$scope module uut $end
+$var wire 4 & A [3:0] $end
+$var wire 4 ' B [3:0] $end
+$var wire 1 ! AmenorB $end
+$var wire 1 " AmaiorB $end
+$var wire 1 # AigualB $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b101 '
+b101 &
+b101 %
+b101 $
+1#
+0"
+0!
+$end
+#10000
+1"
+0#
+b110 %
+b110 '
+b1001 $
+b1001 &
+#20000
+0"
+1!
+b1110 %
+b1110 '
+b11 $
+b11 &
+#30000
+1#
+0!
+b1111 %
+b1111 '
+b1111 $
+b1111 &
+#40000
+1!
+0#
+b1 %
+b1 '
+b0 $
+b0 &
+#50000

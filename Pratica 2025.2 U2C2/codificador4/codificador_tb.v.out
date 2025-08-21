@@ -1,0 +1,106 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1539-g2693dd32b)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 10;
+:vpi_module "C:\iverilog\lib\ivl\system.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\iverilog\lib\ivl\va_math.vpi";
+S_000001e1e14cb210 .scope module, "codificador_tb" "codificador_tb" 2 4;
+ .timescale -9 -10;
+v000001e1e14cbbe0_0 .var "e1", 0 0;
+v000001e1e14cbc80_0 .var "e2", 0 0;
+v000001e1e13c3a00_0 .var "e3", 0 0;
+v000001e1e13c33c0_0 .net "s0", 0 0, L_000001e1e1412780;  1 drivers
+v000001e1e13c31e0_0 .net "s1", 0 0, L_000001e1e1412630;  1 drivers
+S_000001e1e13c5d40 .scope module, "uut" "codificador" 2 8, 3 1 0, S_000001e1e14cb210;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "e1";
+    .port_info 1 /INPUT 1 "e2";
+    .port_info 2 /INPUT 1 "e3";
+    .port_info 3 /OUTPUT 1 "s0";
+    .port_info 4 /OUTPUT 1 "s1";
+L_000001e1e14120f0 .functor XOR 1, v000001e1e14cbbe0_0, v000001e1e14cbc80_0, C4<0>, C4<0>;
+L_000001e1e14122b0 .functor XOR 1, L_000001e1e14120f0, v000001e1e13c3a00_0, C4<0>, C4<0>;
+L_000001e1e1412160 .functor OR 1, v000001e1e14cbc80_0, v000001e1e13c3a00_0, C4<0>, C4<0>;
+L_000001e1e1412780 .functor AND 1, L_000001e1e1412160, L_000001e1e14122b0, C4<1>, C4<1>;
+L_000001e1e1412240 .functor OR 1, v000001e1e14cbbe0_0, v000001e1e13c3a00_0, C4<0>, C4<0>;
+L_000001e1e1412630 .functor AND 1, L_000001e1e1412240, L_000001e1e14122b0, C4<1>, C4<1>;
+v000001e1e14c8c20_0 .net *"_ivl_0", 0 0, L_000001e1e14120f0;  1 drivers
+v000001e1e1392bb0_0 .net *"_ivl_4", 0 0, L_000001e1e1412160;  1 drivers
+v000001e1e13c5ed0_0 .net *"_ivl_8", 0 0, L_000001e1e1412240;  1 drivers
+v000001e1e13c5f70_0 .net "e1", 0 0, v000001e1e14cbbe0_0;  1 drivers
+v000001e1e13c6010_0 .net "e2", 0 0, v000001e1e14cbc80_0;  1 drivers
+v000001e1e13c60b0_0 .net "e3", 0 0, v000001e1e13c3a00_0;  1 drivers
+v000001e1e14cba00_0 .net "s0", 0 0, L_000001e1e1412780;  alias, 1 drivers
+v000001e1e14cbaa0_0 .net "s1", 0 0, L_000001e1e1412630;  alias, 1 drivers
+v000001e1e14cbb40_0 .net "xor123", 0 0, L_000001e1e14122b0;  1 drivers
+    .scope S_000001e1e14cb210;
+T_0 ;
+    %vpi_call 2 11 "$dumpfile", "codificador.vcd" {0 0 0};
+    %vpi_call 2 12 "$dumpvars", 32'sb00000000000000000000000000000000, S_000001e1e14cb210 {0 0 0};
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001e1e14cbbe0_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001e1e14cbc80_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001e1e13c3a00_0, 0, 1;
+    %delay 100, 0;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001e1e14cbbe0_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001e1e14cbc80_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001e1e13c3a00_0, 0, 1;
+    %delay 100, 0;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001e1e14cbbe0_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001e1e14cbc80_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001e1e13c3a00_0, 0, 1;
+    %delay 100, 0;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001e1e14cbbe0_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001e1e14cbc80_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001e1e13c3a00_0, 0, 1;
+    %delay 100, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001e1e14cbbe0_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001e1e14cbc80_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001e1e13c3a00_0, 0, 1;
+    %delay 100, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001e1e14cbbe0_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001e1e14cbc80_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001e1e13c3a00_0, 0, 1;
+    %delay 100, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001e1e14cbbe0_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001e1e14cbc80_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001e1e13c3a00_0, 0, 1;
+    %delay 100, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001e1e14cbbe0_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001e1e14cbc80_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001e1e13c3a00_0, 0, 1;
+    %delay 100, 0;
+    %end;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "codificador_tb.v";
+    "./codificador.v";

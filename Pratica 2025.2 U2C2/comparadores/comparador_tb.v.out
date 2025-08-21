@@ -1,0 +1,87 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1539-g2693dd32b)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "C:\iverilog\lib\ivl\system.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\iverilog\lib\ivl\va_math.vpi";
+S_00000193f94b63c0 .scope module, "comparador_tb" "comparador_tb" 2 8;
+ .timescale -9 -12;
+v00000193f94c3bc0_0 .var "A", 3 0;
+v00000193f94c3d00_0 .net "AigualB", 0 0, L_00000193f94c3b20;  1 drivers
+v00000193f94c3ee0_0 .net "AmaiorB", 0 0, L_00000193f94c3300;  1 drivers
+v00000193f94c3760_0 .net "AmenorB", 0 0, L_00000193f94c3800;  1 drivers
+v00000193f94c3c60_0 .var "B", 3 0;
+S_00000193f94c5ea0 .scope module, "uut" "comparador" 2 14, 3 12 0, S_00000193f94b63c0;
+ .timescale 0 0;
+    .port_info 0 /INPUT 4 "A";
+    .port_info 1 /INPUT 4 "B";
+    .port_info 2 /OUTPUT 1 "AmaiorB";
+    .port_info 3 /OUTPUT 1 "AmenorB";
+    .port_info 4 /OUTPUT 1 "AigualB";
+v00000193f9493040_0 .net "A", 3 0, v00000193f94c3bc0_0;  1 drivers
+v00000193f9492c70_0 .net "AigualB", 0 0, L_00000193f94c3b20;  alias, 1 drivers
+v00000193f94c6030_0 .net "AmaiorB", 0 0, L_00000193f94c3300;  alias, 1 drivers
+v00000193f94c60d0_0 .net "AmenorB", 0 0, L_00000193f94c3800;  alias, 1 drivers
+v00000193f94c6170_0 .net "B", 3 0, v00000193f94c3c60_0;  1 drivers
+v00000193f94c6210_0 .net *"_ivl_0", 0 0, L_00000193f94c3260;  1 drivers
+L_00000193f95110a8 .functor BUFT 1, C4<1>, C4<0>, C4<0>, C4<0>;
+v00000193f94c3030_0 .net/2u *"_ivl_10", 0 0, L_00000193f95110a8;  1 drivers
+L_00000193f95110f0 .functor BUFT 1, C4<0>, C4<0>, C4<0>, C4<0>;
+v00000193f94c3120_0 .net/2u *"_ivl_12", 0 0, L_00000193f95110f0;  1 drivers
+v00000193f94c31c0_0 .net *"_ivl_16", 0 0, L_00000193f94c3a80;  1 drivers
+L_00000193f9511138 .functor BUFT 1, C4<1>, C4<0>, C4<0>, C4<0>;
+v00000193f94c3940_0 .net/2u *"_ivl_18", 0 0, L_00000193f9511138;  1 drivers
+L_00000193f9511018 .functor BUFT 1, C4<1>, C4<0>, C4<0>, C4<0>;
+v00000193f94c36c0_0 .net/2u *"_ivl_2", 0 0, L_00000193f9511018;  1 drivers
+L_00000193f9511180 .functor BUFT 1, C4<0>, C4<0>, C4<0>, C4<0>;
+v00000193f94c3440_0 .net/2u *"_ivl_20", 0 0, L_00000193f9511180;  1 drivers
+L_00000193f9511060 .functor BUFT 1, C4<0>, C4<0>, C4<0>, C4<0>;
+v00000193f94c3e40_0 .net/2u *"_ivl_4", 0 0, L_00000193f9511060;  1 drivers
+v00000193f94c34e0_0 .net *"_ivl_8", 0 0, L_00000193f94c39e0;  1 drivers
+L_00000193f94c3260 .cmp/gt 4, v00000193f94c3bc0_0, v00000193f94c3c60_0;
+L_00000193f94c3300 .functor MUXZ 1, L_00000193f9511060, L_00000193f9511018, L_00000193f94c3260, C4<>;
+L_00000193f94c39e0 .cmp/gt 4, v00000193f94c3c60_0, v00000193f94c3bc0_0;
+L_00000193f94c3800 .functor MUXZ 1, L_00000193f95110f0, L_00000193f95110a8, L_00000193f94c39e0, C4<>;
+L_00000193f94c3a80 .cmp/eq 4, v00000193f94c3bc0_0, v00000193f94c3c60_0;
+L_00000193f94c3b20 .functor MUXZ 1, L_00000193f9511180, L_00000193f9511138, L_00000193f94c3a80, C4<>;
+    .scope S_00000193f94b63c0;
+T_0 ;
+    %vpi_call 2 23 "$dumpfile", "comparador.vcd" {0 0 0};
+    %vpi_call 2 24 "$dumpvars", 32'sb00000000000000000000000000000000, S_00000193f94b63c0 {0 0 0};
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v00000193f94c3bc0_0, 0, 4;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v00000193f94c3c60_0, 0, 4;
+    %delay 10000, 0;
+    %pushi/vec4 9, 0, 4;
+    %store/vec4 v00000193f94c3bc0_0, 0, 4;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v00000193f94c3c60_0, 0, 4;
+    %delay 10000, 0;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v00000193f94c3bc0_0, 0, 4;
+    %pushi/vec4 14, 0, 4;
+    %store/vec4 v00000193f94c3c60_0, 0, 4;
+    %delay 10000, 0;
+    %pushi/vec4 15, 0, 4;
+    %store/vec4 v00000193f94c3bc0_0, 0, 4;
+    %pushi/vec4 15, 0, 4;
+    %store/vec4 v00000193f94c3c60_0, 0, 4;
+    %delay 10000, 0;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v00000193f94c3bc0_0, 0, 4;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v00000193f94c3c60_0, 0, 4;
+    %delay 10000, 0;
+    %vpi_call 2 41 "$finish" {0 0 0};
+    %end;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "comparador_tb.v";
+    "./comparador.v";
