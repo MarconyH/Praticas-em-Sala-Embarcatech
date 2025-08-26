@@ -1,0 +1,7 @@
+v 4
+file . "nand_nor_gate_tb.vhd" "2d78def8d06cfc29d69229b8d6a406a7bd8abf18" "20250826143252.084":
+  entity nand_nor_gate_tb at 1( 0) + 0 on 13;
+  architecture sim of nand_nor_gate_tb at 7( 91) + 0 on 14;
+file . "nand_nor_gate.vhd" "c0c452d0cf60c01823da41b682a3f4328771403c" "20250826143252.084":
+  entity nand_nor_gate at 1( 0) + 0 on 11;
+  architecture comportamento of nand_nor_gate at 13( 218) + 0 on 12;

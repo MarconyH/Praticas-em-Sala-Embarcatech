@@ -1,0 +1,7 @@
+v 4
+file . "xor_not_gate_tb.vhd" "fea60f8dc38a17752ee285fb6bc92e47915a7562" "20250826142634.870":
+  entity xor_not_gate_tb at 1( 0) + 0 on 13;
+  architecture sim of xor_not_gate_tb at 7( 90) + 0 on 14;
+file . "xor_not_gate.vhd" "817a7b08c7f9e03ac9dfc2b2bea1ea84cfa64cdb" "20250826142634.869":
+  entity xor_not_gate at 1( 0) + 0 on 11;
+  architecture comportamento of xor_not_gate at 13( 217) + 0 on 12;

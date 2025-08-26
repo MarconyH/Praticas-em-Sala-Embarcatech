@@ -1,0 +1,51 @@
+$date
+  Tue Aug 26 11:33:15 2025
+$end
+$version
+  GHDL v0
+$end
+$timescale
+  1 fs
+$end
+$scope module standard $end
+$upscope $end
+$scope module std_logic_1164 $end
+$upscope $end
+$scope module nand_nor_gate_tb $end
+$var reg 1 ! a $end
+$var reg 1 " b $end
+$var reg 1 # y $end
+$var reg 1 $ x $end
+$scope module dut $end
+$var reg 1 % a $end
+$var reg 1 & b $end
+$var reg 1 ' y $end
+$var reg 1 ( x $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+0!
+0"
+1#
+1$
+0%
+0&
+1'
+1(
+#10000000
+1"
+0#
+1&
+0'
+#20000000
+1!
+0"
+1%
+0&
+#30000000
+1"
+0$
+1&
+0(
+#40000000

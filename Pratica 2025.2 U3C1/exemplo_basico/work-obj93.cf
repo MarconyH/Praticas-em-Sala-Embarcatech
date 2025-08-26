@@ -1,0 +1,7 @@
+v 4
+file . "exemplo_basico_tb.vhd" "30d6b38133b2c629b000f3694ff711279dfa62cf" "20250826134015.576":
+  entity exemplo_basico_tb at 1( 0) + 0 on 13;
+  architecture sim of exemplo_basico_tb at 7( 92) + 0 on 14;
+file . "exemplo_basico.vhd" "54f69566dbb703f5670c64c17c255a80b2d37f66" "20250826134015.576":
+  entity exemplo_basico at 1( 0) + 0 on 11;
+  architecture comportamento of exemplo_basico at 12( 198) + 0 on 12;

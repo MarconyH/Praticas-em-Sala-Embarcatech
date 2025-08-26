@@ -1,0 +1,7 @@
+v 4
+file . ".\or_gate_tb.vhd" "c98a101b714c1e24392b8aa23d3a2d3868626ad3" "20250826142208.996":
+  entity or_gate_tb at 1( 0) + 0 on 13;
+  architecture sim of or_gate_tb at 7( 85) + 0 on 14;
+file . ".\or_gate.vhd" "5f4777f3d0092b0c51c3ecffac3a9e6c56edb9c2" "20250826142208.996":
+  entity or_gate at 1( 0) + 0 on 11;
+  architecture comportamento of or_gate at 12( 183) + 0 on 12;

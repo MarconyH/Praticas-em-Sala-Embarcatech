@@ -1,0 +1,7 @@
+v 4
+file . "porta_and_tb.vhd" "406d2581a8299972d036fa1d2d75f09300cae943" "20250826141825.640":
+  entity porta_and_tb at 1( 0) + 0 on 13;
+  architecture sim of porta_and_tb at 7( 87) + 0 on 14;
+file . "porta_and.vhd" "fbb7d923700e9a4be7a9e06c6c486220eb324e9a" "20250826141822.269":
+  entity porta_and at 1( 0) + 0 on 11;
+  architecture comportamento of porta_and at 12( 185) + 0 on 12;
